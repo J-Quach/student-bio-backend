@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS IDTable;
+
+
+CREATE TABLE IDTable(
+    fullName VARCHAR(50) NOT NULL,
+    class VARCHAR(15) NOT NULL,
+    hobby VARCHAR(250) NOT NULL,
+    bio VARCHAR(250) NOT NULL,
+    favNum INTEGER NOT NULL
+);
