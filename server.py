@@ -39,3 +39,119 @@ if not (DATABASE and HOST and PORT and PASSWORD and USER):
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
+
+
+@app.route('/all_User', methods=['GET'])
+def all_User():
+    """
+    all_User reads all the Users from the url 127.0.0.1:5000/all_User 
+    and queries the database for all Users
+
+    Parameters:
+        None
+
+    Returns:
+        returns [
+            list of IDTable objects (userID, firstName, lastName, userRole, hobby, bio, favNum)
+        ]
+    """
+
+    cur = conn.cursor()
+
+    # This queries for all Users by userRole
+    query = """
+        SELECT *
+        FROM IDTable
+        ORDER BY IDTable.userRole
+    """
+    cur.execute(query)
+
+    res = cur.fetchall()
+    all_users = []
+
+    for col in res:
+        res_dict = {
+            "userID": col[0],
+            "firstName": col[1],
+            "lastName": col[2],
+            "userRole": col[3],
+            "hobby": col[4],
+            "bio": col[5],
+            "favNum": col[6]
+        }
+        all_users.append(res_dict)
+
+    # Handle if User doesn't exist
+    if all_users is None:
+        return jsonify({
+            "result": False,
+            "message": "Users doesn't exist"
+        })
+    else:
+        return jsonify({
+            "result": True,
+            "user_list": all_users
+        })
+
+    cur.close()
+
+    return jsonify({
+        "result": True,
+        "message": "Completed printing all users"
+    })
+
+
+
+
+
+
+@app.route("/IDTable/<userID>", methods=['GET'])
+def get_user(userID):
+    """
+    get_user takes the userID from the url 127.0.0.1/IDTable/<userID> and queries the database for the user for the given userID
+
+    Parameters:
+        userID: ID of the user
+    
+    Returns:
+        returns JSON(userID, firstName, lastName, userRole, hobby, bio, favNum)
+    """
+
+    cur = conn.cursor()
+
+    query = """
+        SELECT *
+        FROM IDTable
+        WHERE IDTable.userID = %s
+    """
+
+    cur.execute(query, (userID))
+
+    res = cur.fetchone()
+    res_dict = {
+        "userID": col[0],
+        "firstName": col[1],
+        "lastName": col[2],
+        "userRole": col[3],
+        "hobby": col[4],
+        "bio": col[5],
+        "favNum": col[6]
+    }
+    cur.close()
+
+    # Handle if UserID doesn't exist
+    if res is None:
+        return jsonify({
+            "result": False,
+            "message": "Error, UserID doesn't exist"
+        })
+    else:
+        return jsonify({
+            "result": True,
+            "user": res_dict
+        })
+    
+    return jsonify({
+        "result": True,
+        "message": "Completed printing user information"
+    })
