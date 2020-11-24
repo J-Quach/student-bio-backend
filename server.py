@@ -155,3 +155,6 @@ def get_user(userID):
         "result": True,
         "message": "Completed printing user information"
     })
+
+
+# 11/23/2020 TODO: Create a post endpoint to accept data into Database
