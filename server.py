@@ -129,13 +129,13 @@ def get_user(userID):
 
     res = cur.fetchone()
     res_dict = {
-        "userID": col[0],
-        "firstName": col[1],
-        "lastName": col[2],
-        "userRole": col[3],
-        "hobby": col[4],
-        "bio": col[5],
-        "favNum": col[6]
+        "userID": res[0],
+        "firstName": res[1],
+        "lastName": res[2],
+        "userRole": res[3],
+        "hobby": res[4],
+        "bio": res[5],
+        "favNum": res[6]
     }
     cur.close()
 
