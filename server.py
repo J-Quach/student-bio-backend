@@ -128,14 +128,15 @@ def get_user(userID):
     cur.execute(query, (userID))
 
     res = cur.fetchone()
+
     res_dict = {
-        "userID": col[0],
-        "firstName": col[1],
-        "lastName": col[2],
-        "userRole": col[3],
-        "hobby": col[4],
-        "bio": col[5],
-        "favNum": col[6]
+        "userID": res[0],
+        "firstName": res[1],
+        "lastName": res[2],
+        "userRole": res[3],
+        "hobby": res[4],
+        "bio": res[5],
+        "favNum": res[6]
     }
     cur.close()
 
@@ -155,6 +156,54 @@ def get_user(userID):
         "result": True,
         "message": "Completed printing user information"
     })
+
+
+@app.route("/create_user", method = ["POST"]) 
+def create_user:
+
+    rec = request.get_json()
+    
+    FIRSTNAME = rec['firstName'] or None
+    LASTNAME = rec['lastName'] or None
+    USERROLE = 'student'
+    HOBBY = rec['hobby'] or None
+    BIO = rec['bio'] or None
+    FAVNUM = rec['favNum'] or None
+
+    if( FIRSTNAME is None 
+        or LASTNAME is None
+        or HOBBY is None
+        or BIO is None
+        or FAVNUM is None
+    ):
+        return jsonify({
+            "result": False,
+            "message": "Missing one or more information."
+        })
+    
+    cur = conn.cursor()
+
+    user_query = """
+        INSERT INTO IDTable(firstName, lastName, hobby, bio, favNum)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+    try:
+        cur.execute(user_query,FIRSTNAME,LASTNAME,USERROLE,HOBBY,BIO,FAVNUM)
+        conn.commit()
+        cur.close()
+        return jsonify({
+            "result": True,
+            "message": "Successfully updated database"
+        })
+    except:
+        print("Error inserting in Database!")
+        conn.rollback()
+        return jsonify({
+            "result": False,
+            "message": "There was an error updating the database." 
+        })
+
+
 
 
 # 11/23/2020 TODO: Create a post endpoint to accept data into Database
