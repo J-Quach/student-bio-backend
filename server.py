@@ -158,8 +158,8 @@ def get_user(userID):
     })
 
 
-@app.route("/create_user", method = ["POST"]) 
-def create_user:
+@app.route("/create_user", methods = ["POST"]) 
+def create_user():
 
     rec = request.get_json()
     
