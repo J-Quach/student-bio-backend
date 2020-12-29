@@ -123,10 +123,13 @@ def get_user(userID):
         FROM IDTable
         WHERE IDTable.userId = %s
     """
-    print(query % (userID))
+    # Test to see what userID returns depending on "," or "%" before
+    # print(query % (userID))
 
     #TODO: Fix this portion!! Not able to retrive data due to 
     # TypeError: not all arguments converted during string formatting
+    #UPDATE 12/28/2020: Fixed!!! 
+    # Changed from cur.execute(query, (userID)) -> cur.execute(query % (userID))
     cur.execute(query % (userID))
 
     res = cur.fetchone()
