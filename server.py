@@ -116,16 +116,18 @@ def get_user(userID):
     Returns:
         returns JSON(userID, firstName, lastName, userRole, hobby, bio, favNum)
     """
-
     cur = conn.cursor()
 
     query = """
         SELECT *
         FROM IDTable
-        WHERE IDTable.userID = %s
+        WHERE IDTable.userId = %s
     """
+    print(query % (userID))
 
-    cur.execute(query, (userID))
+    #TODO: Fix this portion!! Not able to retrive data due to 
+    # TypeError: not all arguments converted during string formatting
+    cur.execute(query % (userID))
 
     res = cur.fetchone()
 
@@ -165,7 +167,7 @@ def create_user():
     
     FIRSTNAME = rec['firstName'] or None
     LASTNAME = rec['lastName'] or None
-    USERROLE = 'student'
+    USERROLE = "student"
     HOBBY = rec['hobby'] or None
     BIO = rec['bio'] or None
     FAVNUM = rec['favNum'] or None
@@ -184,11 +186,11 @@ def create_user():
     cur = conn.cursor()
 
     user_query = """
-        INSERT INTO IDTable(firstName, lastName, hobby, bio, favNum)
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO IDTable(firstName, lastName, userRole, hobby, bio, favNum)
+        VALUES (%s, %s, %s, %s, %s, %s)
         """
     try:
-        cur.execute(user_query,FIRSTNAME,LASTNAME,USERROLE,HOBBY,BIO,FAVNUM)
+        cur.execute(user_query,(FIRSTNAME,LASTNAME,USERROLE,HOBBY,BIO,FAVNUM))
         conn.commit()
         cur.close()
         return jsonify({
