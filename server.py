@@ -35,7 +35,7 @@ conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 if not (DATABASE_URL):
     sys.exit("""You have not set all environment variables. Check for:
-      * DATABSE_URL"""
+      * DATABASE_URL"""
     )
 
 # throw error if the variables do not exist in the environment variables
