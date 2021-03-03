@@ -6,9 +6,9 @@ post_data = {
     "lastName": "Star",
     "hobby": "ORAORAORAORAORAOROARAORAORAORAORAOROA",
     "bio": "ORAORAORAORAORAOROARAORAORAORAORAOROAORAORAORAORAORAOROARAORAORAORAORAOROAORAORAORAORAORAOROARAORAORAORAORAOROAORAORAORAORAORAOROARAORAORAORAORAOROAORAORAORAORAORAOROARAORAORAORAORAOROA",
-    "favNum": 69
+    "favNum": 55
 }
 
-res = requests.post('http://127.0.0.1:5000/create_user', json=post_data)
+res = requests.post('https://student-bio-backend.herokuapp.com/create_user', json=post_data)
 if res.ok:
     print(res.json())
